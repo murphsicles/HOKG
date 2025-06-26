@@ -20,7 +20,8 @@
 /// let (base_point, private_key, public_key, minimal_data) = hokg(config).unwrap();
 /// ```
 pub mod ecc;
+pub mod hensel;
 pub mod hokg;
 pub mod utils;
-pub use ecc::Point; // Added to re-export Point
+pub use ecc::Point;
 pub use hokg::{hokg, Config};
