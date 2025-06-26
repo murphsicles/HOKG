@@ -30,6 +30,7 @@ pub use ecc::elliptic_curve_multiply;
 pub use hokg::{hokg, Config};
 
 /// Represents a point on an elliptic curve (x, y) or the point at infinity.
+/// Publicly exported as `hokg::Point` for use in the crate's API.
 #[derive(Debug, Clone, PartialEq)]
 pub enum Point {
     Infinity,
