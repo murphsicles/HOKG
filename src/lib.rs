@@ -19,20 +19,12 @@
 /// };
 /// let (base_point, private_key, public_key, minimal_data) = hokg(config).unwrap();
 /// ```
-use num_bigint::BigInt;
-
 pub mod ecc;
 pub mod hensel;
 pub mod hokg;
+pub mod point;
 pub mod utils;
 
 pub use ecc::elliptic_curve_multiply;
 pub use hokg::{hokg, Config};
-
-/// Represents a point on an elliptic curve (x, y) or the point at infinity.
-/// Publicly exported as `hokg::Point` for use in the crate's API.
-#[derive(Debug, Clone, PartialEq)]
-pub enum Point {
-    Infinity,
-    Coordinates(BigInt, BigInt),
-}
+pub use point::Point;
