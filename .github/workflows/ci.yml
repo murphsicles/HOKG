@@ -20,17 +20,17 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Force clean Git checkout and verify repository state
-      - name: Verify Git Checkout
+      # Fetch and verify Git checkout state
+      - name: Fetch and Verify Git Checkout
         run: |
           git fetch origin
           git checkout main
+          git reset --hard origin/main
           git clean -fdx
-          git reset --hard
           git status
           git log -1
           git diff --exit-code || echo "Unexpected changes detected"
-          find src tests -name '*.rs' -exec stat --format="%n %y" {} \;
+          find src tests -name '*.rs' -exec stat --format="%n %y %s" {} \;
         shell: bash
 
       # Install the latest stable Rust toolchain
@@ -48,11 +48,11 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents, checksums, and modification times
+      # Debug: Print contents, checksums, and metadata
       - name: Debug Source and Test Files
         run: |
           echo "Debugging files at $(date)"
-          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"; stat --format="%n %y" "{}"' \;
+          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"; stat --format="%n %y %s" "{}"' \;
         shell: bash
 
       # Check module structure
