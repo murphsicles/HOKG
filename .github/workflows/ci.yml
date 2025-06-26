@@ -31,6 +31,10 @@ jobs:
       - name: Check Rust Version
         run: rustc --version
 
+      # Clean build artifacts
+      - name: Clean Build
+        run: cargo clean
+
       # Check code formatting with rustfmt
       - name: Check Formatting
         run: cargo fmt --check
