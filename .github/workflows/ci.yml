@@ -31,7 +31,10 @@ jobs:
           git log -1
           git log -1 --pretty=%B
           git rev-parse --abbrev-ref HEAD
-          git rev-parse HEAD
+          git rev-parse HEAD > current_commit.txt
+          echo "Verifying HEAD commit matches expected"
+          git rev-parse origin/main > expected_commit.txt
+          diff current_commit.txt expected_commit.txt || echo "HEAD commit mismatch"
           find src tests -name '*.rs' -exec stat --format="%n %y %s" {} \;
           echo "Computing repository checksum"
           find src tests -name '*.rs' -exec sha256sum {} \; | sort | sha256sum > repo_checksum.txt
@@ -40,7 +43,7 @@ jobs:
 
       # Clean up verification files
       - name: Clean Up Verification Files
-        run: rm -f repo_checksum.txt
+        run: rm -f repo_checksum.txt current_commit.txt expected_commit.txt
         shell: bash
 
       # Install the latest stable Rust toolchain
