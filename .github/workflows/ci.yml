@@ -20,12 +20,13 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Verify Git checkout state
-      - name: Verify Git Checkout
+      # Force clean Git checkout
+      - name: Force Clean Checkout
         run: |
+          git clean -fdx
+          git reset --hard
           git status
           git log -1
-          find src tests -name '*.rs' -exec stat --format="%n %y" {} \;
         shell: bash
 
       # Install the latest stable Rust toolchain
@@ -43,11 +44,11 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents and checksums of source/test files
+      # Debug: Print contents, checksums, and modification times
       - name: Debug Source and Test Files
         run: |
           echo "Debugging files at $(date)"
-          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"' \;
+          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"; stat --format="%n %y" "{}"' \;
         shell: bash
 
       # Check module structure
