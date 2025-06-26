@@ -26,7 +26,9 @@ pub mod hensel;
 pub mod hokg;
 pub mod utils;
 
+pub use ecc::elliptic_curve_multiply;
 pub use hokg::{hokg, Config};
+pub use Point;
 
 /// Represents a point on an elliptic curve (x, y) or the point at infinity.
 #[derive(Debug, Clone, PartialEq)]
