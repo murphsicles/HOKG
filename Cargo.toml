@@ -3,6 +3,7 @@ name = "hokg"
 version = "0.1.0"
 edition = "2021"
 description = "Hensel-Optimized Key Generation (HOKG) for data-efficient elliptic curve cryptography"
+authors = ["Dr. Roy Murphy"]
 license = "MIT"
 repository = "https://github.com/murphsicles/HOKG"
 keywords = ["cryptography", "elliptic-curve", "hensel", "ecc", "data-efficiency"]
