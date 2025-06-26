@@ -1,0 +1,26 @@
+[package]
+name = "hokg"
+version = "0.1.0"
+edition = "2021"
+description = "Hensel-Optimized Key Generation (HOKG) for data-efficient elliptic curve cryptography"
+license = "MIT"
+repository = "https://github.com/murphsicles/HOKG"
+keywords = ["cryptography", "elliptic-curve", "hensel", "ecc", "data-efficiency"]
+categories = ["cryptography", "mathematics"]
+
+[dependencies]
+num-bigint = { version = "0.4", features = ["rand"] } # For large integer arithmetic
+num-traits = "0.2"                                   # For numeric traits
+rand = "0.8"                                         # For random number generation
+
+[dev-dependencies]
+criterion = "0.5"                                    # For benchmarking
+rand = "0.8"                                         # For test randomization
+
+[[bench]]
+name = "hokg_bench"
+harness = false
+
+[profile.release]
+opt-level = 3
+lto = "thin"
