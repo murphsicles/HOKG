@@ -35,6 +35,10 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
+      # Debug: Print src/lib.rs contents to verify
+      - name: Debug lib.rs Contents
+        run: cat src/lib.rs || true
+
       # Check code formatting with rustfmt
       - name: Check Formatting
         run: cargo fmt --check
