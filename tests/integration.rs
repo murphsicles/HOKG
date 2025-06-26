@@ -1,7 +1,6 @@
 // tests/integration.rs
 
-use hokg::ecc::Point;
-use hokg::{hokg, Config};
+use hokg::{Config, Point, hokg};
 use num_traits::Zero;
 
 #[test]
