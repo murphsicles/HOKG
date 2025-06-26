@@ -5,7 +5,7 @@ use num_traits::ToPrimitive;
 use rand::Rng;
 use std::error::Error;
 
-use crate::{ecc::elliptic_curve_multiply, Point, hensel::hensel_lift};
+use crate::{ecc::elliptic_curve_multiply, hensel::hensel_lift, Point};
 
 /// Configuration for the HOKG algorithm.
 #[derive(Debug, Clone)]
