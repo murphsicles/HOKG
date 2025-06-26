@@ -20,14 +20,17 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Fetch latest commit and verify checkout state
-      - name: Fetch and Verify Git Checkout
+      # Force clean Git checkout and verify repository state
+      - name: Verify Git Checkout
         run: |
           git fetch origin
           git checkout main
+          git clean -fdx
+          git reset --hard
           git status
           git log -1
-          find src tests -name '*.rs' -exec ls -l {} \;
+          git diff --exit-code || echo "Unexpected changes detected"
+          find src tests -name '*.rs' -exec stat --format="%n %y" {} \;
         shell: bash
 
       # Install the latest stable Rust toolchain
