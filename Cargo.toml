@@ -9,9 +9,9 @@ keywords = ["cryptography", "elliptic-curve", "hensel", "ecc", "data-efficiency"
 categories = ["cryptography", "mathematics"]
 
 [dependencies]
-num-bigint = { version = "0.4", features = ["rand"] } # For large integer arithmetic
-num-traits = "0.2"                                   # For numeric traits
-rand = "0.8"                                         # For random number generation
+num-bigint = { version = "0.4.6", features = ["rand"] } # For large integer arithmetic
+num-traits = "0.2.29"                                   # For numeric traits
+rand = "0.9.1"                                         # For random number generation
 
 [dev-dependencies]
 criterion = "0.5"                                    # For benchmarking
