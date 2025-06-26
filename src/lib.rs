@@ -8,7 +8,7 @@
 ///
 /// # Example
 /// ```rust
-/// use hokg::{hokg, Config, ecc::Point};
+/// use hokg::{hokg, Config, Point};
 /// let config = Config {
 ///     p: 17,
 ///     a: 2,
@@ -19,10 +19,18 @@
 /// };
 /// let (base_point, private_key, public_key, minimal_data) = hokg(config).unwrap();
 /// ```
+use num_bigint::BigInt;
+
 pub mod ecc;
 pub mod hensel;
 pub mod hokg;
 pub mod utils;
 
-pub use ecc::Point;
 pub use hokg::{hokg, Config};
+
+/// Represents a point on an elliptic curve (x, y) or the point at infinity.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Point {
+    Infinity,
+    Coordinates(BigInt, BigInt),
+}
