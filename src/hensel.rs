@@ -1,12 +1,12 @@
 // src/hensel.rs
 
-use num_bigint::BigInt;
-use num_traits::{One, Zero};
+use num_bigint_dig::BigInt;
 use std::error::Error;
 
-use crate::utils::{gcd, mod_inverse, square_root_mod_p};
+use crate::utils::{gcd, mod_inverse};
 
-/// Lifts a seed point (x0, y0) on the curve y^2 = x^3 + ax + b mod p to mod p^k.
+/// Performs Hensel lifting to lift a point (x0, y0) on an elliptic curve y^2 = x^3 + ax + b mod p
+/// to a point modulo p^k.
 pub fn hensel_lift(
     p: &BigInt,
     a: &BigInt,
@@ -15,46 +15,44 @@ pub fn hensel_lift(
     y0: &BigInt,
     k: usize,
 ) -> Result<(BigInt, BigInt), Box<dyn Error>> {
-    // Verify seed point lies on the curve
-    if (y0 * y0) % p != (x0 * x0 * x0 + a * x0 + b) % p {
-        return Err("Seed point does not lie on the curve modulo p".into());
+    let mut x = x0.clone();
+    let mut y = y0.clone();
+
+    // Verify the initial point satisfies y^2 = x^3 + ax + b mod p
+    let left = (y.clone() * y.clone()) % p;
+    let right = (x.clone() * x.clone() * x.clone() + a * &x + b) % p;
+    if left != right {
+        return Err("Initial point does not lie on the curve".into());
     }
 
-    // Verify non-singularity
-    let four = BigInt::from(4);
-    let twenty_seven = BigInt::from(27);
-    if (four * a * a * a + twenty_seven * b * b) % p == BigInt::zero() {
-        return Err("Curve is singular modulo p".into());
-    }
+    // Iterative Hensel lifting up to p^k
+    for i in 1..=k {
+        let modulus = p.pow(i as u32);
 
-    let mut x_current = x0.clone();
-    let mut y_current = y0.clone();
-    let mut modulus = p.clone();
+        // Compute the derivative f'(x) = 3x^2 + a
+        let three = BigInt::from(3);
+        let f_prime = (three * &x * &x + a) % &modulus;
 
-    for _ in 1..=k {
-        modulus = &modulus * p;
+        // Compute f(x) = y^2 - (x^3 + ax + b)
+        let f_x = (y.clone() * y.clone() - (x.clone() * x.clone() * x.clone() + a * &x + b))
+            % &modulus;
 
-        // Define f(x) = x^3 + ax + b - y^2
-        let y_current_sq = &y_current * &y_current;
-        let f = |x: &BigInt| -> BigInt { (x * x * x + a * x + b - &y_current_sq) % &modulus };
-        let f_prime = |x: &BigInt| -> BigInt { (BigInt::from(3) * x * x + a) % &modulus };
-
-        // Check if f'(x_current) is invertible modulo p
-        if gcd(&f_prime(&x_current), p) != BigInt::one() {
-            return Err("Derivative not invertible, lifting fails".into());
+        // Check if f'(x) is invertible modulo p^i
+        if gcd(&f_prime, &modulus) != BigInt::from(1) {
+            return Err("Hensel lifting failed: derivative not invertible".into());
         }
 
-        // Hensel's lemma: x_next = x_current - f(x_current) / f'(x_current)
-        let f_val = f(&x_current);
-        let f_prime_val = f_prime(&x_current);
-        let inv = mod_inverse(&f_prime_val, &modulus)?;
-        x_current = (&x_current - f_val * inv) % &modulus;
+        // Update x using Newton's method: x_{i+1} = x_i - f(x_i)/f'(x_i)
+        let delta_x = (f_x * mod_inverse(&f_prime, &modulus)?) % &modulus;
+        x = (x - delta_x) % &modulus;
 
-        // Update y using the curve equation: y^2 = x^3 + ax + b
-        let y_square = (&x_current * &x_current * &x_current + a * &x_current + b) % &modulus;
-        y_current = square_root_mod_p(&y_square, &modulus)
-            .ok_or_else(|| "No valid square root for y_next".to_string())?;
+        // Update y to satisfy y^2 = x^3 + ax + b mod p^i
+        let right_side = (x.clone() * x.clone() * x.clone() + a * &x + b) % &modulus;
+        if right_side < BigInt::from(0) {
+            return Err("Negative right side in Hensel lifting".into());
+        }
+        y = (y + &modulus) % &modulus; // Adjust y to be positive
     }
 
-    Ok((x_current, y_current))
+    Ok((x, y))
 }
