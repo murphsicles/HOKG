@@ -4,7 +4,7 @@ use num_bigint::BigInt;
 use num_traits::{One, Zero};
 use std::error::Error;
 
-use crate::utils::{mod_inverse, gcd};
+use crate::utils::{gcd, mod_inverse};
 
 /// Represents a point on an elliptic curve (x, y) or the point at infinity (None).
 #[derive(Debug, Clone, PartialEq)]
@@ -107,4 +107,4 @@ pub fn elliptic_curve_multiply(
     }
 
     Ok(result)
-    }
+}
