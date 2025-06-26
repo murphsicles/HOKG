@@ -1,7 +1,7 @@
 // src/hokg.rs
 
-use num_bigint::BigInt;
-use num_traits::ToPrimitive;
+use num_bigint_dig::BigInt;
+use num_bigint_dig::ToPrimitive;
 use rand::Rng;
 use std::error::Error;
 
@@ -37,7 +37,7 @@ pub fn hokg(config: Config) -> HokgResult {
 
     // Step 2: Generate private key (simplified range for demo)
     let modulus_u64 = modulus.to_u64().ok_or("Modulus too large for u64")?;
-    let private_key = BigInt::from(rand::rng().random_range(1..modulus_u64));
+    let private_key = BigInt::from(rand::rng().gen_range(1..modulus_u64));
 
     // Step 3: Compute public key
     let public_key = elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
