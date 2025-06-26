@@ -27,6 +27,10 @@ jobs:
           toolchain: 1.80
           components: rustfmt, clippy
 
+      # Verify Rust version
+      - name: Check Rust Version
+        run: rustc --version
+
       # Cache Rust dependencies to speed up builds
       - name: Cache Dependencies
         uses: Swatinem/rust-cache@v2
