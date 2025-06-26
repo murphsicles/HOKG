@@ -1,6 +1,6 @@
 // src/utils.rs
 
-use num_bigint::{BigInt, Sign};
+use num_bigint::BigInt;
 use num_traits::{One, Zero};
 use std::error::Error;
 
@@ -19,7 +19,7 @@ fn extended_gcd(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) {
         return (b.clone(), BigInt::zero(), BigInt::one());
     }
     let (g, x, y) = extended_gcd(&(b % a), a);
-    (g, y - (b / a) * x, x)
+    (g, y - (b / a) * x.clone(), x)
 }
 
 /// Computes the square root of `value` modulo `p` (simplified for small primes).
@@ -27,11 +27,13 @@ fn extended_gcd(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) {
 pub fn square_root_mod_p(value: &BigInt, p: &BigInt) -> Option<BigInt> {
     // Simplified: Try all residues for small primes
     let zero = BigInt::zero();
+    let mut i = zero.clone();
     let p_minus_one = p - BigInt::one();
-    for i in zero.clone()..=p_minus_one {
+    while i <= p_minus_one {
         if (&i * &i) % p == value % p {
             return Some(i);
         }
+        i += BigInt::one();
     }
     None
 }
@@ -41,7 +43,7 @@ pub fn gcd(a: &BigInt, b: &BigInt) -> BigInt {
     let mut a = a.clone();
     let mut b = b.clone();
     while !b.is_zero() {
-        let temp = b;
+        let temp = b.clone();
         b = a % b;
         a = temp;
     }
