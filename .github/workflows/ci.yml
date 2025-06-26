@@ -35,9 +35,9 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents of all source and test files
+      # Debug: Print contents of all source and test files with line numbers
       - name: Debug Source and Test Files
-        run: find src tests -name '*.rs' -exec cat {} \; || true
+        run: find src tests -name '*.rs' -exec cat -n {} \; || true
 
       # Check module structure
       - name: Check Module Structure
