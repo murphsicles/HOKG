@@ -12,11 +12,11 @@ categories = ["cryptography", "mathematics"]
 [dependencies]
 num-bigint-dig = "0.8.4"  # For large integer arithmetic
 num-traits = "0.2.19"      # For numeric traits
-rand = "0.9.1"             # For random number generation
+rand = "0.8.5"             # For random number generation
 
 [dev-dependencies]
 criterion = "0.6.0"        # For benchmarking
-rand = "0.9.1"             # For test randomization
+rand = "0.8.5"             # For test randomization
 
 [[bench]]
 name = "hokg_bench"
