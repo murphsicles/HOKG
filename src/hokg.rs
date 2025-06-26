@@ -19,10 +19,11 @@ pub struct Config {
     pub k: usize, // Lifting exponent
 }
 
+/// Return type alias for the HOKG algorithm result.
+type HokgResult = Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
+
 /// Runs the HOKG algorithm to generate an ECC key pair.
-pub fn hokg(
-    config: Config,
-) -> Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>> {
+pub fn hokg(config: Config) -> HokgResult {
     let p = BigInt::from(config.p);
     let a = BigInt::from(config.a);
     let b = BigInt::from(config.b);
@@ -38,7 +39,7 @@ pub fn hokg(
     // Step 2: Generate private key (simplified range for demo)
     let modulus_u64 = modulus
         .to_u64()
-        .ok_or_else(|| "Modulus too large for u64")?;
+        .ok_or("Modulus too large for u64")?;
     let private_key = BigInt::from(rand::rng().random_range(1..modulus_u64));
 
     // Step 3: Compute public key
