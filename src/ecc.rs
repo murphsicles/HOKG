@@ -14,6 +14,7 @@ pub enum Point {
 }
 
 /// Performs scalar multiplication `d * point` on the elliptic curve y^2 = x^3 + ax + b mod modulus.
+#[allow(unused_variables)]
 pub fn elliptic_curve_multiply(
     d: &BigInt,
     point: &Point,
@@ -41,13 +42,13 @@ pub fn elliptic_curve_multiply(
                     let three = BigInt::from(3);
                     let two = BigInt::from(2);
                     let s_num = (three * x * x + a) % modulus;
-                    let s_den = (two * y) % modulus;
+                    let s_den = (two.clone() * y) % modulus;
                     if gcd(&s_den, modulus) != BigInt::one() {
                         return Err("Doubling failed: denominator not invertible".into());
                     }
                     let s = (s_num * mod_inverse(&s_den, modulus)?) % modulus;
                     // x' = s^2 - 2x
-                    let x_new = (s * s - x * two) % modulus;
+                    let x_new = (s.clone() * s.clone() - x * two) % modulus;
                     // y' = s(x - x') - y
                     let y_new = (s * (x - &x_new) - y) % modulus;
                     Point::Coordinates(x_new, y_new)
@@ -74,7 +75,7 @@ pub fn elliptic_curve_multiply(
                         }
                         let s = (s_num * mod_inverse(&s_den, modulus)?) % modulus;
                         // x' = s^2 - x1 - x2
-                        let x_new = (s * s - x1 - x2) % modulus;
+                        let x_new = (s.clone() * s.clone() - x1 - x2) % modulus;
                         // y' = s(x1 - x') - y1
                         let y_new = (s * (x1 - &x_new) - y1) % modulus;
                         Point::Coordinates(x_new, y_new)
@@ -93,12 +94,14 @@ pub fn elliptic_curve_multiply(
                     let three = BigInt::from(3);
                     let two = BigInt::from(2);
                     let s_num = (three * x * x + a) % modulus;
-                    let s_den = (two * y) % modulus;
+                    let s_den = (two.clone() * y) % modulus;
                     if gcd(&s_den, modulus) != BigInt::one() {
                         return Err("Current doubling failed: denominator not invertible".into());
                     }
                     let s = (s_num * mod_inverse(&s_den, modulus)?) % modulus;
-                    let x_new = (s * s - x * two) % modulus;
+                    // x' = s^2 - 2x
+                    let x_new = (s.clone() * s.clone() - x * two) % modulus;
+                    // y' = s(x - x') - y
                     let y_new = (s * (x - &x_new) - y) % modulus;
                     Point::Coordinates(x_new, y_new)
                 }
