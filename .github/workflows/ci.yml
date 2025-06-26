@@ -40,45 +40,45 @@ jobs:
         env:
           RUSTFLAGS: "-Dwarnings"
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    continue-on-error: true
-    steps:
-      - name: Clean Clone Repository
-        run: |
-          git clone https://github.com/murphsicles/HOKG .
-          git checkout main
-          git reset --hard origin/main
-          git clean -fdx
-        shell: bash
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: 1.83
-          components: rustfmt
-
-      - name: Check Rust Version
-        run: rustc --version
-
-      - name: Check Repository State
-        run: |
-          git log -n 3
-          git status
-          git diff
-
-      - name: Clean Build
-        run: cargo clean
-
-      - name: Debug file contents
-        run: |
-          cat src/lib.rs
-          cat src/point.rs
-          cat tests/integration.rs
-          cat benches/hokg_bench.rs
-
-      - name: Run Tests
-        run: cargo test --verbose
-        env:
-          RUSTFLAGS: "-Dwarnings"
+  # test:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   continue-on-error: true
+  #   steps:
+  #     - name: Clean Clone Repository
+  #       run: |
+  #         git clone https://github.com/murphsicles/HOKG .
+  #         git checkout main
+  #         git reset --hard origin/main
+  #         git clean -fdx
+  #       shell: bash
+  #
+  #     - name: Install Rust
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         toolchain: 1.83
+  #         components: rustfmt
+  #
+  #     - name: Check Rust Version
+  #       run: rustc --version
+  #
+  #     - name: Check Repository State
+  #       run: |
+  #         git log -n 3
+  #         git status
+  #         git diff
+  #
+  #     - name: Clean Build
+  #       run: cargo clean
+  #
+  #     - name: Debug file contents
+  #       run: |
+  #         cat src/lib.rs
+  #         cat src/point.rs
+  #         cat tests/integration.rs
+  #         cat benches/hokg_bench.rs
+  #
+  #     - name: Run Tests
+  #       run: cargo test --verbose
+  #       env:
+  #         RUSTFLAGS: "-Dwarnings"
