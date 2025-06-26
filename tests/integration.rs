@@ -3,6 +3,9 @@
 use hokg::{hokg, Config, Point};
 use num_traits::Zero;
 
+// Fallback import for debugging, in case hokg::Point fails
+use hokg::ecc::Point as EccPoint;
+
 #[test]
 fn test_hokg_valid_config() {
     let config = Config {
