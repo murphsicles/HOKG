@@ -17,7 +17,10 @@ fn test_hokg_valid_config() {
     let (base_point, private_key, public_key, minimal_data) = result.unwrap();
     assert!(matches!(base_point, hokg::ecc::Point::Coordinates(_, _)));
     assert!(!private_key.is_zero());
-    assert!(matches!(public_key, hokg::ecc::Point::Coordinates(_, _) | hokg::ecc::Point::Infinity));
+    assert!(matches!(
+        public_key,
+        hokg::ecc::Point::Coordinates(_, _) | hokg::ecc::Point::Infinity
+    ));
     assert_eq!(minimal_data, (17, 2, 3, 5, 6, 5));
 }
 
