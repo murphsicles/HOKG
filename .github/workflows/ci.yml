@@ -35,9 +35,15 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents of all source files
-      - name: Debug Source Files
-        run: find src -name '*.rs' -exec cat {} \; || true
+      # Debug: Print contents of all source and test files
+      - name: Debug Source and Test Files
+        run: find src tests -name '*.rs' -exec cat {} \; || true
+
+      # Check module structure
+      - name: Check Module Structure
+        run: cargo check
+        env:
+          RUSTFLAGS: "-Dwarnings"
 
       # Check code formatting with rustfmt
       - name: Check Formatting
