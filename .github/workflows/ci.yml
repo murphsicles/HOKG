@@ -25,6 +25,7 @@ jobs:
         run: |
           git status
           git log -1
+          find src tests -name '*.rs' -exec stat --format="%n %y" {} \;
         shell: bash
 
       # Install the latest stable Rust toolchain
@@ -42,11 +43,11 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents of all source and test files with line numbers and timestamps
+      # Debug: Print contents and checksums of source/test files
       - name: Debug Source and Test Files
         run: |
-          echo "Debugging source and test files at $(date)"
-          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"' \;
+          echo "Debugging files at $(date)"
+          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"' \;
         shell: bash
 
       # Check module structure
@@ -83,7 +84,7 @@ jobs:
         env:
           RUSTFLAGS: "-Dwarnings"
 
-      # Verify benchmarks compile (but don't run them)
+      # Verify benchmarks compile
       - name: Check Benchmarks
         run: cargo bench --no-run
         env:
