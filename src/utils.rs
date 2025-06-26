@@ -29,7 +29,7 @@ pub fn mod_inverse(a: &BigInt, m: &BigInt) -> Result<BigInt, Box<dyn std::error:
         a = temp;
 
         let temp_x = x.clone();
-        x = x_prev - quotient * &x;
+        x = x_prev - quotient.clone() * &x;
         x_prev = temp_x;
 
         let temp_y = y.clone();
@@ -42,7 +42,7 @@ pub fn mod_inverse(a: &BigInt, m: &BigInt) -> Result<BigInt, Box<dyn std::error:
     }
 
     // Ensure the result is positive
-    Ok((x_prev % m + m) % m)
+    Ok((x_prev % m.clone() + m.clone()) % m)
 }
 
 /// Computes the square root of a modulo p (a prime), returning the root or an error if it doesn't exist.
