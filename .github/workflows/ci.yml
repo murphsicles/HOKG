@@ -29,6 +29,7 @@ jobs:
           git clean -fdx
           git status
           git log -1
+          git log -1 --pretty=%B
           git rev-parse --abbrev-ref HEAD
           git rev-parse HEAD
           find src tests -name '*.rs' -exec stat --format="%n %y %s" {} \;
