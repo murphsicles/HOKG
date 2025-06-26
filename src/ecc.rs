@@ -4,8 +4,8 @@ use num_bigint::BigInt;
 use num_traits::{One, Zero};
 use std::error::Error;
 
+use crate::point::Point;
 use crate::utils::{gcd, mod_inverse};
-use crate::Point;
 
 /// Performs scalar multiplication `d * point` on the elliptic curve y^2 = x^3 + ax + b mod modulus.
 #[allow(unused_variables)]
