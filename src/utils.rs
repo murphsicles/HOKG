@@ -1,7 +1,7 @@
 // src/utils.rs
 
-use num_bigint_dig::BigInt;
 use num_bigint_dig::traits::{One, Zero};
+use num_bigint_dig::BigInt;
 
 /// Computes the greatest common divisor of a and b using the extended Euclidean algorithm,
 /// returning the GCD.
@@ -29,11 +29,11 @@ pub fn mod_inverse(a: &BigInt, m: &BigInt) -> Result<BigInt, Box<dyn std::error:
         a = temp;
 
         let temp_x = x.clone();
-        x = x_prev - &quotient * &x;
+        x = x_prev - quotient * &x;
         x_prev = temp_x;
 
         let temp_y = y.clone();
-        y = y_prev - &quotient * &y;
+        y = y_prev - quotient * &y;
         y_prev = temp_y;
     }
 
