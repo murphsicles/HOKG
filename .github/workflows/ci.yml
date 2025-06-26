@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Dwarnings"  # Treat warnings as errors for stricter linting
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Install the latest stable Rust toolchain
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.80
+          components: rustfmt, clippy
+
+      # Cache Rust dependencies to speed up builds
+      - name: Cache Dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+
+      # Check code formatting with rustfmt
+      - name: Check Formatting
+        run: cargo fmt --check
+        continue-on-error: false
+
+      # Run Clippy for static analysis
+      - name: Run Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+        continue-on-error: false
+
+      # Build the project
+      - name: Build
+        run: cargo build --verbose --all-targets
+        env:
+          RUSTFLAGS: "-Dwarnings"
+
+      # Run tests
+      - name: Run Tests
+        run: cargo test --verbose
+        env:
+          RUSTFLAGS: "-Dwarnings"
+
+      # Verify benchmarks compile (but don't run them)
+      - name: Check Benchmarks
+        run: cargo bench --no-run
+        env:
+          RUSTFLAGS: "-Dwarnings"
