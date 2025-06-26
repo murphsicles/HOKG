@@ -2,8 +2,7 @@
 
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
-use rand::rngs::thread::thread_rng;
-use rand::Rng;
+use rand::{thread_rng, Rng};
 use std::error::Error;
 
 use crate::{ecc::elliptic_curve_multiply, hensel::hensel_lift, point::Point};
@@ -22,6 +21,7 @@ pub struct Config {
 /// Return type alias for the HOKG algorithm result.
 type HokgResult = Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
 
+#[allow(deprecated)]
 /// Runs the HOKG algorithm to generate an ECC key pair.
 pub fn hokg(config: Config) -> HokgResult {
     let p = BigInt::from(config.p);
