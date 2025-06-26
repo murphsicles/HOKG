@@ -4,7 +4,7 @@ use num_bigint::BigInt;
 use num_traits::{One, Zero};
 use std::error::Error;
 
-use crate::utils::{mod_inverse, square_root_mod_p, gcd};
+use crate::utils::{gcd, mod_inverse, square_root_mod_p};
 
 /// Lifts a seed point (x0, y0) on the curve y^2 = x^3 + ax + b mod p to mod p^k.
 pub fn hensel_lift(
@@ -36,12 +36,8 @@ pub fn hensel_lift(
 
         // Define f(x) = x^3 + ax + b - y^2
         let y_current_sq = &y_current * &y_current;
-        let f = |x: &BigInt| -> BigInt {
-            (x * x * x + a * x + b - &y_current_sq) % &modulus
-        };
-        let f_prime = |x: &BigInt| -> BigInt {
-            (BigInt::from(3) * x * x + a) % &modulus
-        };
+        let f = |x: &BigInt| -> BigInt { (x * x * x + a * x + b - &y_current_sq) % &modulus };
+        let f_prime = |x: &BigInt| -> BigInt { (BigInt::from(3) * x * x + a) % &modulus };
 
         // Check if f'(x_current) is invertible modulo p
         if gcd(&f_prime(&x_current), p) != BigInt::one() {
