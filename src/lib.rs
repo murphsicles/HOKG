@@ -24,5 +24,9 @@ pub mod hensel;
 pub mod hokg;
 pub mod utils;
 
+// Re-export the main types and functions
 pub use ecc::Point;
 pub use hokg::{hokg, Config};
+
+// Also re-export the ecc module for direct access
+pub use ecc;
