@@ -35,9 +35,9 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print src/lib.rs contents to verify
-      - name: Debug lib.rs Contents
-        run: cat src/lib.rs || true
+      # Debug: Print contents of all source files
+      - name: Debug Source Files
+        run: find src -name '*.rs' -exec cat {} \; || true
 
       # Check code formatting with rustfmt
       - name: Check Formatting
