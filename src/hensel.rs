@@ -34,7 +34,8 @@ pub fn hensel_lift(
         let f_prime = (three * &x * &x + a) % &modulus;
 
         // Compute f(x) = y^2 - (x^3 + ax + b)
-        let f_x = (y.clone() * y.clone() - (x.clone() * x.clone() * x.clone() + a * &x + b))
+        let f_x = (y.clone() * y.clone()
+            - (x.clone() * x.clone() * x.clone() + a * &x + b))
             % &modulus;
 
         // Check if f'(x) is invertible modulo p^i
