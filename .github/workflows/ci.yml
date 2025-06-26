@@ -31,10 +31,6 @@ jobs:
           git log -1
           git rev-parse --abbrev-ref HEAD
           find src tests -name '*.rs' -exec stat --format="%n %y %s" {} \;
-          # Save expected contents for diff
-          echo "Expected src/lib.rs contents:" > expected_lib.rs
-          cat src/lib.rs >> expected_lib.rs
-          git diff --no-index expected_lib.rs src/lib.rs || true
         shell: bash
 
       # Install the latest stable Rust toolchain
@@ -57,6 +53,14 @@ jobs:
         run: |
           echo "Debugging files at $(date)"
           find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"; stat --format="%n %y %s" "{}"' \;
+          echo "Expected src/lib.rs contents:" > expected_lib.rs
+          cat src/lib.rs >> expected_lib.rs
+          git diff --no-index expected_lib.rs src/lib.rs || true
+        shell: bash
+
+      # Clean up temporary debug files
+      - name: Clean Up Debug Files
+        run: rm -f expected_lib.rs
         shell: bash
 
       # Check module structure
