@@ -63,7 +63,10 @@ jobs:
         run: rustc --version
 
       - name: Check Repository State
-        run: git log -n 3
+        run: |
+          git log -n 3
+          git status
+          git diff
 
       - name: Clean Build
         run: cargo clean
@@ -71,6 +74,7 @@ jobs:
       - name: Debug file contents
         run: |
           cat src/lib.rs
+          cat src/point.rs
           cat tests/integration.rs
 
       - name: Run Tests
