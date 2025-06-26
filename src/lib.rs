@@ -8,7 +8,7 @@
 ///
 /// # Example
 /// ```rust
-/// use hokg::{hokg, Config, ecc::Point};
+/// use hokg::{hokg, Config, Point};
 /// let config = Config {
 ///     p: 17,
 ///     a: 2,
