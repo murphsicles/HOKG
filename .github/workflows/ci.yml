@@ -76,6 +76,7 @@ jobs:
           cat src/lib.rs
           cat src/point.rs
           cat tests/integration.rs
+          cat benches/hokg_bench.rs
 
       - name: Run Tests
         run: cargo test --verbose
