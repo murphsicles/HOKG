@@ -11,16 +11,18 @@ use crate::hensel::hensel_lift;
 /// Configuration for the HOKG algorithm.
 #[derive(Debug, Clone)]
 pub struct Config {
-    pub p: u64,      // Small prime
-    pub a: i64,      // Curve parameter a
-    pub b: i64,      // Curve parameter b
-    pub x0: i64,     // Seed x-coordinate
-    pub y0: i64,     // Seed y-coordinate
-    pub k: usize,    // Lifting exponent
+    pub p: u64,   // Small prime
+    pub a: i64,   // Curve parameter a
+    pub b: i64,   // Curve parameter b
+    pub x0: i64,  // Seed x-coordinate
+    pub y0: i64,  // Seed y-coordinate
+    pub k: usize, // Lifting exponent
 }
 
 /// Runs the HOKG algorithm to generate an ECC key pair.
-pub fn hokg(config: Config) -> Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>> {
+pub fn hokg(
+    config: Config,
+) -> Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>> {
     let p = BigInt::from(config.p);
     let a = BigInt::from(config.a);
     let b = BigInt::from(config.b);
