@@ -1,7 +1,7 @@
 // src/ecc.rs
 
-use num_bigint_dig::traits::{One, Zero};
 use num_bigint_dig::BigInt;
+use num_traits::{One, Zero};
 use std::error::Error;
 
 use crate::point::Point;
