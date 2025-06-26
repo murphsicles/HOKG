@@ -31,12 +31,6 @@ jobs:
       - name: Check Rust Version
         run: rustc --version
 
-      # Cache Rust dependencies to speed up builds
-      - name: Cache Dependencies
-        uses: Swatinem/rust-cache@v2
-        with:
-          cache-on-failure: true
-
       # Check code formatting with rustfmt
       - name: Check Formatting
         run: cargo fmt --check
