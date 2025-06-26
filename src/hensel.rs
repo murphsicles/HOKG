@@ -4,7 +4,7 @@ use num_bigint_dig::BigInt;
 use num_traits::Pow;
 use std::error::Error;
 
-use crate::utils::{gGCD, mod_inverse};
+use crate::utils::{gcd, mod_inverse};
 
 /// Performs Hensel lifting to lift a point (x0, y0) on an elliptic curve y^2 = x^3 + ax + b mod p
 /// to a point modulo p^k.
