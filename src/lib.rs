@@ -23,8 +23,6 @@ pub mod ecc;
 pub mod hensel;
 pub mod hokg;
 pub mod point;
-pub mod utils;
-
 pub use ecc::elliptic_curve_multiply;
 pub use hokg::{hokg, Config};
 pub use point::Point;
