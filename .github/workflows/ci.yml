@@ -20,13 +20,14 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Force clean Git checkout
-      - name: Force Clean Checkout
+      # Fetch latest commit and verify checkout state
+      - name: Fetch and Verify Git Checkout
         run: |
-          git clean -fdx
-          git reset --hard
+          git fetch origin
+          git checkout main
           git status
           git log -1
+          find src tests -name '*.rs' -exec ls -l {} \;
         shell: bash
 
       # Install the latest stable Rust toolchain
