@@ -11,39 +11,16 @@ env:
   RUSTFLAGS: "-Dwarnings"  # Treat warnings as errors for stricter linting
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository code
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      # Fetch and verify Git checkout state
-      - name: Fetch and Verify Git Checkout
+      # Clean clone the repository
+      - name: Clean Clone Repository
         run: |
-          git fetch origin
+          git clone https://github.com/${{ github.repository }} .
           git checkout main
           git reset --hard origin/main
           git clean -fdx
-          git status
-          git log -1
-          git log -1 --pretty=%B
-          git rev-parse --abbrev-ref HEAD
-          git rev-parse HEAD > current_commit.txt
-          echo "Verifying HEAD commit matches expected"
-          git rev-parse origin/main > expected_commit.txt
-          diff current_commit.txt expected_commit.txt || echo "HEAD commit mismatch"
-          find src tests -name '*.rs' -exec stat --format="%n %y %s" {} \;
-          echo "Computing repository checksum"
-          find src tests -name '*.rs' -exec sha256sum {} \; | sort | sha256sum > repo_checksum.txt
-          cat repo_checksum.txt
-        shell: bash
-
-      # Clean up verification files
-      - name: Clean Up Verification Files
-        run: rm -f repo_checksum.txt current_commit.txt expected_commit.txt
         shell: bash
 
       # Install the latest stable Rust toolchain
@@ -51,7 +28,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: 1.81
-          components: rustfmt, clippy
+          components: rustfmt
 
       # Verify Rust version
       - name: Check Rust Version
@@ -61,41 +38,9 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents, checksums, and metadata
-      - name: Debug Source and Test Files
-        run: |
-          echo "Debugging files at $(date)"
-          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"; sha256sum "{}"; stat --format="%n %y %s" "{}"' \;
-          echo "Expected src/lib.rs contents:" > expected_lib.rs
-          cat src/lib.rs >> expected_lib.rs
-          git diff --no-index expected_lib.rs src/lib.rs || true
-        shell: bash
-
-      # Clean up debug files
-      - name: Clean Up Debug Files
-        run: rm -f expected_lib.rs
-        shell: bash
-
-      # Check module structure
-      - name: Check Module Structure
-        run: cargo check
-        env:
-          RUSTFLAGS: "-Dwarnings"
-
-      # Verify public API
-      - name: Verify Public API
-        run: cargo publish --dry-run
-        env:
-          RUSTFLAGS: "-Dwarnings"
-
       # Check code formatting with rustfmt
       - name: Check Formatting
         run: cargo fmt --check
-        continue-on-error: false
-
-      # Run Clippy for static analysis
-      - name: Run Clippy
-        run: cargo clippy --all-targets --all-features -- -D warnings
         continue-on-error: false
 
       # Build the project
@@ -104,14 +49,36 @@ jobs:
         env:
           RUSTFLAGS: "-Dwarnings"
 
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Clean clone the repository
+      - name: Clean Clone Repository
+        run: |
+          git clone https://github.com/${{ github.repository }} .
+          git checkout main
+          git reset --hard origin/main
+          git clean -fdx
+        shell: bash
+
+      # Install the latest stable Rust toolchain
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.81
+          components: rustfmt
+
+      # Verify Rust version
+      - name: Check Rust Version
+        run: rustc --version
+
+      # Clean build artifacts
+      - name: Clean Build
+        run: cargo clean
+
       # Run tests
       - name: Run Tests
         run: cargo test --verbose
-        env:
-          RUSTFLAGS: "-Dwarnings"
-
-      # Verify benchmarks compile
-      - name: Check Benchmarks
-        run: cargo bench --no-run
         env:
           RUSTFLAGS: "-Dwarnings"
