@@ -20,6 +20,13 @@ jobs:
         with:
           fetch-depth: 1
 
+      # Verify Git checkout state
+      - name: Verify Git Checkout
+        run: |
+          git status
+          git log -1
+        shell: bash
+
       # Install the latest stable Rust toolchain
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -35,9 +42,12 @@ jobs:
       - name: Clean Build
         run: cargo clean
 
-      # Debug: Print contents of all source and test files with line numbers
+      # Debug: Print contents of all source and test files with line numbers and timestamps
       - name: Debug Source and Test Files
-        run: find src tests -name '*.rs' -exec cat -n {} \; || true
+        run: |
+          echo "Debugging source and test files at $(date)"
+          find src tests -name '*.rs' -exec sh -c 'echo "File: {}"; cat -n "{}"' \;
+        shell: bash
 
       # Check module structure
       - name: Check Module Structure
