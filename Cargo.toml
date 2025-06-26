@@ -12,6 +12,7 @@ categories = ["cryptography", "mathematics"]
 [dependencies]
 num-bigint-dig = { version = "0.8.4", features = ["rand"] }  # For large integer arithmetic with random number generation
 num-traits = "0.2.19"                                       # For numeric traits
+rand = "0.9.1"                                              # For random number generation
 
 [dev-dependencies]
 criterion = "0.6.0"                                         # For benchmarking
