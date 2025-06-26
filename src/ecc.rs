@@ -5,13 +5,7 @@ use num_traits::{One, Zero};
 use std::error::Error;
 
 use crate::utils::{gcd, mod_inverse};
-
-/// Represents a point on an elliptic curve (x, y) or the point at infinity (None).
-#[derive(Debug, Clone, PartialEq)]
-pub enum Point {
-    Infinity,
-    Coordinates(BigInt, BigInt),
-}
+use crate::Point;
 
 /// Performs scalar multiplication `d * point` on the elliptic curve y^2 = x^3 + ax + b mod modulus.
 #[allow(unused_variables)]
