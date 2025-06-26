@@ -37,9 +37,7 @@ pub fn hokg(config: Config) -> HokgResult {
     let modulus = p.pow(k as u32);
 
     // Step 2: Generate private key (simplified range for demo)
-    let modulus_u64 = modulus
-        .to_u64()
-        .ok_or("Modulus too large for u64")?;
+    let modulus_u64 = modulus.to_u64().ok_or("Modulus too large for u64")?;
     let private_key = BigInt::from(rand::rng().random_range(1..modulus_u64));
 
     // Step 3: Compute public key
