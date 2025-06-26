@@ -2,7 +2,7 @@
 
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
-use rand::{thread_rng, Rng};
+use rand::thread_rng;
 use std::error::Error;
 
 use crate::{ecc::elliptic_curve_multiply, hensel::hensel_lift, point::Point};
