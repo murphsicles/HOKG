@@ -29,8 +29,12 @@ jobs:
           git clean -fdx
           git status
           git log -1
-          git diff --exit-code || echo "Unexpected changes detected"
+          git rev-parse --abbrev-ref HEAD
           find src tests -name '*.rs' -exec stat --format="%n %y %s" {} \;
+          # Save expected contents for diff
+          echo "Expected src/lib.rs contents:" > expected_lib.rs
+          cat src/lib.rs >> expected_lib.rs
+          git diff --no-index expected_lib.rs src/lib.rs || true
         shell: bash
 
       # Install the latest stable Rust toolchain
