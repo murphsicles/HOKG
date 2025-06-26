@@ -45,6 +45,12 @@ jobs:
         env:
           RUSTFLAGS: "-Dwarnings"
 
+      # Verify public API
+      - name: Verify Public API
+        run: cargo publish --dry-run
+        env:
+          RUSTFLAGS: "-Dwarnings"
+
       # Check code formatting with rustfmt
       - name: Check Formatting
         run: cargo fmt --check
