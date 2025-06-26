@@ -10,13 +10,13 @@ keywords = ["cryptography", "elliptic-curve", "hensel", "ecc", "data-efficiency"
 categories = ["cryptography", "mathematics"]
 
 [dependencies]
-num-bigint = { version = "0.4.6", features = ["rand"] } # For large integer arithmetic
-num-traits = "0.2.19"                                   # For numeric traits
-rand = "0.9.1"                                         # For random number generation
+num-bigint-dig = "0.8.4"  # For large integer arithmetic
+num-traits = "0.2.19"      # For numeric traits
+rand = "0.9.1"             # For random number generation
 
 [dev-dependencies]
-criterion = "0.6.0"                                    # For benchmarking
-rand = "0.9.1"                                         # For test randomization
+criterion = "0.6.0"        # For benchmarking
+rand = "0.9.1"             # For test randomization
 
 [[bench]]
 name = "hokg_bench"
