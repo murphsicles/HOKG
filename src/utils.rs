@@ -1,51 +1,46 @@
 // src/utils.rs
 
-use num_bigint::BigInt;
-use num_traits::{One, Zero};
-use std::error::Error;
+use num_bigint_dig::BigInt;
+use num_bigint_dig::traits::{One, Zero};
 
-/// Computes the modular inverse of `a` modulo `m` using the extended Euclidean algorithm.
-pub fn mod_inverse(a: &BigInt, m: &BigInt) -> Result<BigInt, Box<dyn Error>> {
-    let (g, x, _) = extended_gcd(a, m);
-    if g != BigInt::one() {
+/// Computes the greatest common divisor of a and b using the extended Euclidean algorithm,
+/// returning the GCD.
+pub fn gcd(a: &BigInt, b: &BigInt) -> BigInt {
+    let (mut x, mut y) = (a.clone(), b.clone());
+    while !y.is_zero() {
+        let temp = y.clone();
+        y = x % y;
+        x = temp;
+    }
+    x
+}
+
+/// Computes the modular inverse of a modulo m using the extended Euclidean algorithm,
+/// returning the inverse or an error if it doesn't exist.
+pub fn mod_inverse(a: &BigInt, m: &BigInt) -> Result<BigInt, Box<dyn std::error::Error>> {
+    let (mut a, mut m) = (a.clone(), m.clone());
+    let (mut x, mut y) = (BigInt::zero(), BigInt::one());
+    let (mut x_prev, mut y_prev) = (BigInt::one(), BigInt::zero());
+
+    while !m.is_zero() {
+        let quotient = &a / &m;
+        let temp = m.clone();
+        m = a % m;
+        a = temp;
+
+        let temp_x = x.clone();
+        x = x_prev - &quotient * &x;
+        x_prev = temp_x;
+
+        let temp_y = y.clone();
+        y = y_prev - &quotient * &y;
+        y_prev = temp_y;
+    }
+
+    if a != BigInt::one() {
         return Err("Modular inverse does not exist".into());
     }
-    Ok((x % m + m) % m)
-}
 
-/// Extended Euclidean algorithm to compute GCD and Bézout coefficients.
-fn extended_gcd(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) {
-    if a.is_zero() {
-        return (b.clone(), BigInt::zero(), BigInt::one());
-    }
-    let (g, x, y) = extended_gcd(&(b % a), a);
-    (g, y - (b / a) * x.clone(), x)
-}
-
-/// Computes the square root of `value` modulo `p` (simplified for small primes).
-/// Note: For production, use Tonelli-Shanks for general cases.
-pub fn square_root_mod_p(value: &BigInt, p: &BigInt) -> Option<BigInt> {
-    // Simplified: Try all residues for small primes
-    let zero = BigInt::zero();
-    let mut i = zero.clone();
-    let p_minus_one = p - BigInt::one();
-    while i <= p_minus_one {
-        if (&i * &i) % p == value % p {
-            return Some(i);
-        }
-        i += BigInt::one();
-    }
-    None
-}
-
-/// Computes GCD of two BigInts.
-pub fn gcd(a: &BigInt, b: &BigInt) -> BigInt {
-    let mut a = a.clone();
-    let mut b = b.clone();
-    while !b.is_zero() {
-        let temp = b.clone();
-        b = a % b;
-        a = temp;
-    }
-    a
+    // Ensure the result is positive
+    Ok((x_prev % m + m) % m)
 }
