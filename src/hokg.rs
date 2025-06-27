@@ -8,6 +8,7 @@ use rand::TryRngCore;
 
 // Define the Config struct publicly
 // This struct holds the configuration parameters for the elliptic curve and Hensel lifting
+#[derive(Clone)]
 pub struct Config {
     pub p: u64,   // Small prime
     pub a: i64,   // Curve parameter a
