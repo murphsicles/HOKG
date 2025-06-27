@@ -3,7 +3,7 @@
 use num_bigint_dig::BigInt;
 use std::error::Error;
 
-// Declare the modules for ecc, hensel, hokg, point, and utils
+// Declare the modules
 pub mod ecc;
 pub mod hensel;
 pub mod hokg;
@@ -11,7 +11,6 @@ pub mod point;
 pub mod utils;
 
 // Define the Config struct publicly
-// This struct holds the configuration parameters for the elliptic curve and Hensel lifting
 pub struct Config {
     pub p: u64,   // Small prime
     pub a: i64,   // Curve parameter a
@@ -22,8 +21,6 @@ pub struct Config {
 }
 
 // Define the HokgResult type publicly
-// This type alias represents the result of the HOKG algorithm, containing the base point,
-// private key, public key, and minimal configuration data
 pub type HokgResult = Result<
     (
         point::Point,                     // Base point
@@ -33,9 +30,6 @@ pub type HokgResult = Result<
     ),
     Box<dyn Error>, // Error type
 >;
-
-// Re-export Config for external use
-pub use self::Config;
 
 // Re-export Point from the point module
 pub use point::Point;
