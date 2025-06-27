@@ -32,7 +32,7 @@ pub fn hokg(config: Config) -> HokgResult {
     let private_key = BigInt::from(rng.next_u64() % (modulus_u64 - 1) + 1);
 
     // Compute public key using elliptic curve multiplication
-    let public_key = 
+    let public_key =
         crate::ecc::elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
 
     // Package minimal data for return
