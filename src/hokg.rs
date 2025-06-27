@@ -32,7 +32,8 @@ pub fn hokg(config: Config) -> HokgResult {
     let private_key = BigInt::from(rng().random_range(1..modulus_u64));
 
     // Compute public key using elliptic curve multiplication
-    let public_key = crate::ecc::elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
+    let public_key = 
+        crate::ecc::elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
 
     // Package minimal data for return
     let minimal_data = (config.p, config.a, config.b, config.x0, config.y0, config.k);
