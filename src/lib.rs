@@ -3,11 +3,11 @@
 use num_bigint_dig::BigInt;
 use std::error::Error;
 
-// Declare the modules for ecc, hokg, point, and hensel
+// Declare the modules for ecc, hensel, point, and utils
 pub mod ecc;
 pub mod hensel;
-pub mod hokg;
 pub mod point;
+pub mod utils;
 
 // Define the Config struct publicly
 // This struct holds the configuration parameters for the elliptic curve and Hensel lifting
@@ -41,3 +41,6 @@ pub use hokg::hokg;
 
 // Export the elliptic_curve_multiply function from the ecc module
 pub use ecc::elliptic_curve_multiply;
+
+// Export the mod_inverse function from the utils module
+pub use utils::mod_inverse;
