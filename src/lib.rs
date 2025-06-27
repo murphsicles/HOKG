@@ -8,6 +8,7 @@ pub mod ecc;
 pub mod hensel;
 pub mod point;
 pub mod utils;
+pub mod hokg; // Ensure hokg module is declared
 
 // Define the Config struct publicly
 // This struct holds the configuration parameters for the elliptic curve and Hensel lifting
