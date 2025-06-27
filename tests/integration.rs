@@ -1,6 +1,6 @@
 // tests/integration.rs
 
-use hokg::{hokg, Config, point::Point};
+use hokg::{hokg, point::Point, Config};
 
 // Integration test for the HOKG algorithm
 // Verifies that the key pair generation produces valid results
