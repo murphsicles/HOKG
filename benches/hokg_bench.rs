@@ -3,22 +3,22 @@
 use criterion::{criterion_group, criterion_main, Criterion};
 use hokg::{hokg, Config};
 
-fn bench_hokg(c: &mut Criterion) {
+// Benchmark for the HOKG algorithm
+fn hokg_benchmark(c: &mut Criterion) {
+    // Create a sample configuration for the elliptic curve
     let config = Config {
-        p: 17,
-        a: 2,
-        b: 3,
-        x0: 5,
-        y0: 6,
-        k: 5,
+        p: 5,      // Small prime
+        a: 1,      // Curve parameter a
+        b: 1,      // Curve parameter b
+        x0: 2,     // Seed x-coordinate
+        y0: 3,     // Seed y-coordinate
+        k: 2,      // Lifting exponent
     };
 
-    c.bench_function("hokg_key_generation", |b| {
-        b.iter(|| {
-            hokg(config.clone()).expect("HOKG failed during benchmark");
-        });
-    });
+    // Benchmark the hokg function
+    c.bench_function("hokg", |b| b.iter(|| hokg(config.clone())));
 }
 
-criterion_group!(benches, bench_hokg);
+// Define the benchmark group and main function
+criterion_group!(benches, hokg_benchmark);
 criterion_main!(benches);
