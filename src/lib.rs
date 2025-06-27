@@ -34,9 +34,6 @@ pub type HokgResult = Result<
     Box<dyn Error>, // Error type
 >;
 
-// Re-export Config for external use
-pub use self::Config;
-
 // Re-export Point from the point module
 pub use point::Point;
 
