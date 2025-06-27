@@ -10,7 +10,7 @@ use num_traits::Zero;
 // * `scalar` - The private key scalar to multiply the base point by.
 // * `point` - The base point on the elliptic curve.
 // * `a` - The 'a' coefficient of the elliptic curve.
-// * `b` - The 'b' coefficient of the elliptic curve.
+// * `_b` - The 'b' coefficient of the elliptic curve (unused but kept for interface consistency).
 // * `modulus` - The modulus defining the finite field.
 //
 // # Returns
@@ -19,7 +19,7 @@ pub fn elliptic_curve_multiply(
     scalar: &BigInt,
     point: &Point,
     a: &BigInt,
-    b: &BigInt,
+    _b: &BigInt,
     modulus: &BigInt,
 ) -> Result<Point, Box<dyn std::error::Error>> {
     let mut result = Point::Infinity;
