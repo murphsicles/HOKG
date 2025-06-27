@@ -1,6 +1,6 @@
 // tests/integration.rs
 
-use hokg::{hokg, Point, Config};
+use hokg::{hokg, Config, Point};
 
 // Integration test for the HOKG algorithm
 // Verifies that the key pair generation produces valid results
@@ -8,12 +8,12 @@ use hokg::{hokg, Point, Config};
 fn test_hokg_key_generation() {
     // Create a sample configuration for the elliptic curve
     let config = Config {
-        p: 5,      // Small prime
-        a: 1,      // Curve parameter a
-        b: 1,      // Curve parameter b
-        x0: 2,     // Seed x-coordinate
-        y0: 3,     // Seed y-coordinate
-        k: 2,      // Lifting exponent
+        p: 5,  // Small prime
+        a: 1,  // Curve parameter a
+        b: 1,  // Curve parameter b
+        x0: 2, // Seed x-coordinate
+        y0: 3, // Seed y-coordinate
+        k: 2,  // Lifting exponent
     };
 
     // Run the HOKG algorithm
