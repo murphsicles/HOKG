@@ -6,12 +6,12 @@ use hokg::{hokg, Config};
 fn main() {
     // Create a sample configuration for the elliptic curve
     let config = Config {
-        p: 5,      // Small prime
-        a: 1,      // Curve parameter a
-        b: 1,      // Curve parameter b
-        x0: 2,     // Seed x-coordinate
-        y0: 3,     // Seed y-coordinate
-        k: 2,      // Lifting exponent
+        p: 5,  // Small prime
+        a: 1,  // Curve parameter a
+        b: 1,  // Curve parameter b
+        x0: 2, // Seed x-coordinate
+        y0: 3, // Seed y-coordinate
+        k: 2,  // Lifting exponent
     };
 
     // Run the HOKG algorithm and print the result
