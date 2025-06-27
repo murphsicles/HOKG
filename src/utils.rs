@@ -1,6 +1,7 @@
 // src/utils.rs
 
 use num_bigint_dig::BigInt;
+use num_traits::Zero;
 
 // Computes the greatest common divisor (GCD) of two BigInt numbers using the Euclidean algorithm.
 //
@@ -58,15 +59,15 @@ fn extended_gcd(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) {
     while !r.is_zero() {
         let quotient = &old_r / &r;
         let temp_r = r.clone();
-        r = old_r - &quotient * &r;
+        r = old_r - quotient * &r;
         old_r = temp_r;
 
         let temp_x = x.clone();
-        x = old_x - &quotient * &x;
+        x = old_x - quotient * &x;
         old_x = temp_x;
 
         let temp_y = y.clone();
-        y = old_y - &quotient * &y;
+        y = old_y - quotient * &y;
         old_y = temp_y;
     }
 
