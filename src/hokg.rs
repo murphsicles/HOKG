@@ -1,6 +1,6 @@
 // src/hokg.rs
 
-use crate::{Config, HokgResult, point::Point};
+use crate::{point::Point, Config, HokgResult};
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
 use rand::rngs::OsRng;
@@ -42,7 +42,8 @@ pub fn hokg(config: Config) -> HokgResult {
     let private_key = BigInt::from(rng.next_u64() % (modulus_u64 - 1) + 1);
 
     // Compute the public key by multiplying the base point by the private key on the elliptic curve
-    let public_key = crate::ecc::elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
+    let public_key =
+        crate::ecc::elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
 
     // Prepare minimal data for return, consisting of the original configuration values
     let minimal_data = (config.p, config.a, config.b, config.x0, config.y0, config.k);
