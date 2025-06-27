@@ -14,7 +14,8 @@ pub struct Config {
 }
 
 // Define HokgResult type publicly
-pub type HokgResult = Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
+pub type HokgResult =
+    Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
 
 // Re-export Point from the point module
 pub use point::Point;
