@@ -8,7 +8,7 @@
 
 **HOKG** is a Rust library implementing the Hensel-Optimized Key Generation algorithm for elliptic curve cryptography (ECC). By leveraging Hensel's lemma, HOKG achieves up to 40% data efficiency in key generation, making it ideal for resource-constrained environments like IoT and edge devices. This library is efficient, secure, and built with modern Rust best practices.
 
-📚 Inspired by the article: [Revolutionizing Elliptic Curve Cryptography](https://medium.com/@DrRoyMurphy/revolutionizing-elliptic-curve-cryptography-a-novel-application-of-hensels-lemma-for-d84d53c3a9ba)
+📚 Inspired by the cryptographic whitepaper by Dr. Roy Murphy: [Revolutionizing Elliptic Curve Cryptography](https://medium.com/@DrRoyMurphy/revolutionizing-elliptic-curve-cryptography-a-novel-application-of-hensels-lemma-for-d84d53c3a9ba)
 
 ## ✨ Features
 - **Data Efficiency**: Reduces key generation data footprint by up to 40%.
