@@ -92,7 +92,7 @@ For production use, ensure:
 - Consult a cryptography expert.
 
 ## 📬 Contact
-For questions, open an issue or contact [DrRoyMurphy](https://github.com/DrRoyMurphy).
+For questions, open an issue or contact [Dr. Roy Murphy](https://github.com/murphsicles).
 
 ---
 
