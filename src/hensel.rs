@@ -1,13 +1,22 @@
 // src/hensel.rs
 
+use crate::utils::mod_inverse;
 use num_bigint_dig::BigInt;
 use num_traits::Pow;
-use std::error::Error;
 
-use crate::utils::{gcd, mod_inverse};
-
-/// Performs Hensel lifting to lift a point (x0, y0) on an elliptic curve y^2 = x^3 + ax + b mod p
-/// to a point modulo p^k.
+// Performs Hensel lifting to lift a point (x0, y0) on an elliptic curve y^2 = x^3 + ax + b mod p
+// to a point modulo p^k.
+//
+// # Arguments
+// * `p` - The prime modulus.
+// * `a` - The 'a' coefficient of the elliptic curve.
+// * `b` - The 'b' coefficient of the elliptic curve.
+// * `x0` - The initial x-coordinate seed.
+// * `y0` - The initial y-coordinate seed.
+// * `k` - The lifting exponent.
+//
+// # Returns
+// A `Result` containing the lifted coordinates (x_k, y_k) or an error.
 pub fn hensel_lift(
     p: &BigInt,
     a: &BigInt,
@@ -15,7 +24,7 @@ pub fn hensel_lift(
     x0: &BigInt,
     y0: &BigInt,
     k: usize,
-) -> Result<(BigInt, BigInt), Box<dyn Error>> {
+) -> Result<(BigInt, BigInt), Box<dyn std::error::Error>> {
     let mut x = x0.clone();
     let mut y = y0.clone();
 
@@ -37,11 +46,6 @@ pub fn hensel_lift(
         // Compute f(x) = y^2 - (x^3 + ax + b)
         let f_x =
             (y.clone() * y.clone() - (x.clone() * x.clone() * x.clone() + a * &x + b)) % &modulus;
-
-        // Check if f'(x) is invertible modulo p^i
-        if gcd(&f_prime, &modulus) != BigInt::from(1) {
-            return Err("Hensel lifting failed: derivative not invertible".into());
-        }
 
         // Update x using Newton's method: x_{i+1} = x_i - f(x_i)/f'(x_i)
         let delta_x = (f_x * mod_inverse(&f_prime, &modulus)?) % &modulus;
