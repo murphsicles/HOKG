@@ -1,10 +1,21 @@
 // src/hokg.rs
 
-use crate::{point::Point, Config, HokgResult};
+use crate::{point::Point, HokgResult};
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
 use rand::rngs::OsRng;
 use rand::TryRngCore;
+
+// Define the Config struct publicly
+// This struct holds the configuration parameters for the elliptic curve and Hensel lifting
+pub struct Config {
+    pub p: u64,   // Small prime
+    pub a: i64,   // Curve parameter a
+    pub b: i64,   // Curve parameter b
+    pub x0: i64,  // Seed x-coordinate
+    pub y0: i64,  // Seed y-coordinate
+    pub k: usize, // Lifting exponent
+}
 
 // Generates a key pair using the HOKG algorithm with Hensel lifting for elliptic curves.
 //
