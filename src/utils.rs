@@ -1,72 +1,74 @@
 // src/utils.rs
 
 use num_bigint_dig::BigInt;
-use num_traits::{One, Zero};
 
-/// Computes the greatest common divisor of a and b using the extended Euclidean algorithm,
-/// returning the GCD.
+// Computes the greatest common divisor (GCD) of two BigInt numbers using the Euclidean algorithm.
+//
+// # Arguments
+// * `a` - First number.
+// * `b` - Second number.
+//
+// # Returns
+// The GCD of the two numbers as a BigInt.
 pub fn gcd(a: &BigInt, b: &BigInt) -> BigInt {
-    let (mut x, mut y) = (a.clone(), b.clone());
-    while !y.is_zero() {
-        let temp = y.clone();
-        y = x % y;
-        x = temp;
+    let mut a = a.clone();
+    let mut b = b.clone();
+
+    while !b.is_zero() {
+        let temp = b.clone();
+        b = a % b;
+        a = temp;
     }
-    x
+
+    a
 }
 
-/// Computes the modular inverse of a modulo m using the extended Euclidean algorithm,
-/// returning the inverse or an error if it doesn't exist.
+// Computes the modular inverse of a number modulo m using the extended Euclidean algorithm.
+//
+// # Arguments
+// * `a` - The number to find the inverse for.
+// * `m` - The modulus.
+//
+// # Returns
+// A `Result` containing the modular inverse of `a` modulo `m` or an error if it does not exist.
 pub fn mod_inverse(a: &BigInt, m: &BigInt) -> Result<BigInt, Box<dyn std::error::Error>> {
-    let (mut a, mut m) = (a.clone(), m.clone());
-    let (mut x, mut y) = (BigInt::zero(), BigInt::one());
-    let (mut x_prev, mut y_prev) = (BigInt::one(), BigInt::zero());
-
-    while !m.is_zero() {
-        let quotient = &a / &m;
-        let temp = m.clone();
-        m = a % m;
-        a = temp;
-
-        let temp_x = x.clone();
-        x = x_prev - quotient.clone() * &x;
-        x_prev = temp_x;
-
-        let temp_y = y.clone();
-        y = y_prev - quotient * &y;
-        y_prev = temp_y;
-    }
-
-    if a != BigInt::one() {
+    let (g, x, _) = extended_gcd(a, m);
+    if g != BigInt::from(1) {
         return Err("Modular inverse does not exist".into());
     }
-
-    // Ensure the result is positive
-    Ok((x_prev % m.clone() + m.clone()) % m)
+    Ok((x % m + m) % m)
 }
 
-/// Computes the square root of a modulo p (a prime), returning the root or an error if it doesn't exist.
-/// Implements Tonelli-Shanks algorithm for simplicity (assumes p is prime).
-pub fn square_root_mod_p(a: &BigInt, p: &BigInt) -> Result<BigInt, Box<dyn std::error::Error>> {
-    if a.is_zero() {
-        return Ok(BigInt::zero());
+// Helper function to compute the extended GCD of two BigInt numbers.
+//
+// # Arguments
+// * `a` - First number.
+// * `b` - Second number.
+//
+// # Returns
+// A tuple `(g, x, y)` where `g` is the GCD and `x`, `y` satisfy ax + by = g.
+fn extended_gcd(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) {
+    let mut old_r = a.clone();
+    let mut r = b.clone();
+    let mut old_x = BigInt::from(1);
+    let mut x = BigInt::from(0);
+    let mut old_y = BigInt::from(0);
+    let mut y = BigInt::from(1);
+
+    while !r.is_zero() {
+        let quotient = &old_r / &r;
+        let temp_r = r.clone();
+        r = old_r - &quotient * &r;
+        old_r = temp_r;
+
+        let temp_x = x.clone();
+        x = old_x - &quotient * &x;
+        old_x = temp_x;
+
+        let temp_y = y.clone();
+        y = old_y - &quotient * &y;
+        old_y = temp_y;
     }
 
-    // Check if a is a quadratic residue using Euler's criterion: a^((p-1)/2) ≡ 1 (mod p)
-    let two = BigInt::from(2);
-    let exponent = (p - BigInt::one()) / &two;
-    let legendre = a.modpow(&exponent, p);
-    if legendre != BigInt::one() {
-        return Err("No square root exists modulo p".into());
-    }
-
-    // Simplified case for p ≡ 3 (mod 4)
-    if p % &two == BigInt::one() {
-        let exponent = (p + BigInt::one()) / BigInt::from(4);
-        let result = a.modpow(&exponent, p);
-        return Ok(result);
-    }
-
-    // For other primes, return error (full Tonelli-Shanks not implemented for brevity)
-    Err("Square root modulo p not implemented for this case".into())
+    (old_r, old_x, old_y)
 }
