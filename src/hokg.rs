@@ -1,6 +1,7 @@
 use crate::{Config, HokgResult};
 use num_bigint_dig::BigInt;
-use rand::{rng, Rng};
+use num_traits::Pow;
+use rand::{rngs::OsRng, RngCore};
 
 /// Generates a key pair using the HOKG algorithm.
 ///
@@ -26,11 +27,12 @@ pub fn hokg(config: Config) -> HokgResult {
     let (x_k, y_k) = crate::hensel::hensel_lift(&p, &a, &b, &x0, &y0, k)?;
     let base_point = crate::point::Point::Coordinates(x_k.clone(), y_k.clone());
 
-    // Generate private key using updated random functions
-    let private_key = BigInt::from(rng().random_range(1..modulus_u64));
+    // Generate private key using cryptographically secure random number generator
+    let mut rng = OsRng;
+    let private_key = BigInt::from(rng.next_u64() % (modulus_u64 - 1) + 1);
 
     // Compute public key using elliptic curve multiplication
-    let public_key =
+    let public_key = 
         crate::ecc::elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
 
     // Package minimal data for return
