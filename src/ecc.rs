@@ -2,18 +2,19 @@
 
 use crate::{point::Point, utils::mod_inverse};
 use num_bigint_dig::BigInt;
+use num_traits::Zero;
 
-// Performs elliptic curve point multiplication to compute the public key
+// Performs elliptic curve point multiplication to compute the public key.
 //
 // # Arguments
-// * `scalar` - The private key scalar to multiply the base point by
-// * `point` - The base point on the elliptic curve
-// * `a` - The 'a' coefficient of the elliptic curve
-// * `b` - The 'b' coefficient of the elliptic curve
-// * `modulus` - The modulus defining the finite field
+// * `scalar` - The private key scalar to multiply the base point by.
+// * `point` - The base point on the elliptic curve.
+// * `a` - The 'a' coefficient of the elliptic curve.
+// * `b` - The 'b' coefficient of the elliptic curve.
+// * `modulus` - The modulus defining the finite field.
 //
 // # Returns
-// A `Result` containing the resulting point (the public key) or an error
+// A `Result` containing the resulting point (the public key) or an error.
 pub fn elliptic_curve_multiply(
     scalar: &BigInt,
     point: &Point,
