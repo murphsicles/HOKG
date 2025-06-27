@@ -3,7 +3,8 @@
 use crate::{Config, HokgResult, point::Point};
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
-use rand::{rngs::OsRng, RngCore};
+use rand::rngs::OsRng;
+use rand::RngCore;
 use std::error::Error;
 
 /// Generates a key pair using the HOKG algorithm with Hensel lifting for elliptic curves.
