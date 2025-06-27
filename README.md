@@ -4,7 +4,7 @@
 [![Crates.io](https://img.shields.io/crates/v/hokg.svg)](https://crates.io/crates/hokg)
 [![Dependencies](https://deps.rs/repo/github/murphsicles/HOKG/status.svg)](https://deps.rs/repo/github/murphsicles/HOKG)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Rust](https://img.shields.io/badge/Rust-1.80+-orange.svg)](https://www.rust-lang.org/)
+[![Rust](https://img.shields.io/badge/Rust-1.83+-orange.svg)](https://www.rust-lang.org/)
 
 **HOKG** is a Rust library implementing the Hensel-Optimized Key Generation algorithm for elliptic curve cryptography (ECC). By leveraging Hensel's lemma, HOKG achieves up to 40% data efficiency in key generation, making it ideal for resource-constrained environments like IoT and edge devices. This library is efficient, secure, and built with modern Rust best practices.
 
