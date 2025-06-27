@@ -3,19 +3,20 @@
 use crate::{point::Point, Config, HokgResult};
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
-use rand::{rngs::OsRng, Rng};
+use rand::rngs::OsRng;
+use std::error::Error;
 
-// Generates a key pair using the HOKG algorithm with Hensel lifting for elliptic curves.
-//
-// # Arguments
-// * `config` - Configuration parameters for the elliptic curve and Hensel lifting process.
-//
-// # Returns
-// A `HokgResult` containing:
-// - The base point on the elliptic curve,
-// - The generated private key,
-// - The computed public key,
-// - Minimal configuration data for potential reuse.
+/// Generates a key pair using the HOKG algorithm with Hensel lifting for elliptic curves.
+///
+/// # Arguments
+/// * `config` - Configuration parameters for the elliptic curve and Hensel lifting process.
+///
+/// # Returns
+/// A `HokgResult` containing:
+/// - The base point on the elliptic curve,
+/// - The generated private key,
+/// - The computed public key,
+/// - Minimal configuration data for potential reuse.
 pub fn hokg(config: Config) -> HokgResult {
     // Extract configuration values
     let p = BigInt::from(config.p);
@@ -30,14 +31,14 @@ pub fn hokg(config: Config) -> HokgResult {
     let modulus_u64 = modulus.to_u64().ok_or("Modulus too large for u64")?;
 
     // Perform Hensel lifting to obtain the base point coordinates at the k-th level
-    let (x_k, y_k) = crate::utils::hensel_lift(&p, &a, &b, &x0, &y0, k)?;
+    let (x_k, y_k) = crate::hensel::hensel_lift(&p, &a, &b, &x0, &y0, k)?;
     let base_point = Point::Coordinates(x_k.clone(), y_k.clone());
 
     // Initialize a cryptographically secure random number generator
     let mut rng = OsRng;
 
     // Generate a private key within the range [1, modulus_u64 - 1]
-    let private_key = BigInt::from(rng.gen_range(1..modulus_u64));
+    let private_key = BigInt::from(rng.next_u64() % (modulus_u64 - 1) + 1);
 
     // Compute the public key by multiplying the base point by the private key on the elliptic curve
     let public_key =
