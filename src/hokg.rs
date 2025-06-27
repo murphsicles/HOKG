@@ -5,7 +5,6 @@ use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
 use rand::rngs::OsRng;
 use rand::TryRngCore;
-use std::error::Error;
 
 // Generates a key pair using the HOKG algorithm with Hensel lifting for elliptic curves.
 //
@@ -40,7 +39,10 @@ pub fn hokg(config: Config) -> HokgResult {
 
     // Generate a private key within the range [1, modulus_u64 - 1]
     let private_key = BigInt::from(
-        rng.try_next_u64().ok_or("Failed to generate random u64")? % (modulus_u64 - 1) + 1,
+        rng.try_next_u64()
+            .map_err(|_| "Failed to generate random u64")?
+            % (modulus_u64 - 1)
+            + 1,
     );
 
     // Compute the public key by multiplying the base point by the private key on the elliptic curve
