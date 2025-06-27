@@ -2,19 +2,26 @@
 
 use hokg::{hokg, Config};
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+// Simple example demonstrating the use of the HOKG algorithm
+fn main() {
+    // Create a sample configuration for the elliptic curve
     let config = Config {
-        p: 17,
-        a: 2,
-        b: 3,
-        x0: 5,
-        y0: 6,
-        k: 5,
+        p: 5,      // Small prime
+        a: 1,      // Curve parameter a
+        b: 1,      // Curve parameter b
+        x0: 2,     // Seed x-coordinate
+        y0: 3,     // Seed y-coordinate
+        k: 2,      // Lifting exponent
     };
-    let (base_point, private_key, public_key, minimal_data) = hokg(config)?;
-    println!("Base Point: {:?}", base_point);
-    println!("Private Key: {}", private_key);
-    println!("Public Key: {:?}", public_key);
-    println!("Minimal Data: {:?}", minimal_data);
-    Ok(())
+
+    // Run the HOKG algorithm and print the result
+    match hokg(config) {
+        Ok((base_point, private_key, public_key, minimal_data)) => {
+            println!("Base Point: {:?}", base_point);
+            println!("Private Key: {}", private_key);
+            println!("Public Key: {:?}", public_key);
+            println!("Minimal Data: {:?}", minimal_data);
+        }
+        Err(e) => println!("Error: {}", e),
+    }
 }
