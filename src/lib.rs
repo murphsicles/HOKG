@@ -1,10 +1,5 @@
-pub mod ecc;
-pub mod hensel;
-pub mod hokg;
-pub mod point;
-pub mod utils;
+// src/lib.rs
 
-use crate::point::Point;
 use num_bigint_dig::BigInt;
 use std::error::Error;
 
@@ -19,11 +14,13 @@ pub struct Config {
 }
 
 // Define HokgResult type publicly
-pub type HokgResult =
-    Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
+pub type HokgResult = Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
 
-// Export only the hokg function from the hokg module
+// Re-export Point from the point module
+pub use point::Point;
+
+// Export the hokg function from the hokg module
 pub use hokg::hokg;
+
 // Export other necessary items
 pub use ecc::elliptic_curve_multiply;
-pub use point::Point;
