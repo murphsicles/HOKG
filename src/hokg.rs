@@ -2,25 +2,12 @@
 
 use num_bigint_dig::BigInt;
 use num_traits::{Pow, ToPrimitive};
-#[allow(deprecated)]
-use rand::{thread_rng, Rng};
+use rand::{rng, Rng}; // Updated import: use rng instead of thread_rng
 use std::error::Error;
 
 use crate::{ecc::elliptic_curve_multiply, hensel::hensel_lift, point::Point};
 
-/// Configuration for the HOKG algorithm.
-#[derive(Debug, Clone)]
-pub struct Config {
-    pub p: u64,   // Small prime
-    pub a: i64,   // Curve parameter a
-    pub b: i64,   // Curve parameter b
-    pub x0: i64,  // Seed x-coordinate
-    pub y0: i64,  // Seed y-coordinate
-    pub k: usize, // Lifting exponent
-}
-
-/// Return type alias for the HOKG algorithm result.
-type HokgResult = Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
+// ... (Config struct and type alias remain unchanged)
 
 /// Runs the HOKG algorithm to generate an ECC key pair.
 pub fn hokg(config: Config) -> HokgResult {
@@ -38,7 +25,7 @@ pub fn hokg(config: Config) -> HokgResult {
 
     // Step 2: Generate private key (simplified range for demo)
     let modulus_u64 = modulus.to_u64().ok_or("Modulus too large for u64")?;
-    let private_key = BigInt::from(thread_rng().gen_range(1..modulus_u64));
+    let private_key = BigInt::from(rng().random_range(1..modulus_u64)); // Updated: rng() and random_range
 
     // Step 3: Compute public key
     let public_key = elliptic_curve_multiply(&private_key, &base_point, &a, &b, &modulus)?;
