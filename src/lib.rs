@@ -1,29 +1,30 @@
 // src/lib.rs
 
-/// Hensel-Optimized Key Generation (HOKG) library for data-efficient ECC key generation.
-///
-/// This library implements the HOKG algorithm, leveraging Hensel's lemma to lift
-/// low-precision points to high-precision ECC base points, reducing data usage
-/// by up to 40%. Suitable for resource-constrained environments like IoT.
-///
-/// # Example
-/// ```rust
-/// use hokg::{hokg, Config, point::Point};
-/// let config = Config {
-///     p: 17,
-///     a: 2,
-///     b: 3,
-///     x0: 5,
-///     y0: 6,
-///     k: 5,
-/// };
-/// let (base_point, private_key, public_key, minimal_data) = hokg(config).unwrap();
-/// ```
 pub mod ecc;
 pub mod hensel;
 pub mod hokg;
 pub mod point;
 pub mod utils;
+
+use std::error::Error;
+use num_bigint_dig::BigInt;
+use crate::point::Point;
+
+// Define Config struct publicly
+pub struct Config {
+    pub p: u64,   // Small prime
+    pub a: i64,   // Curve parameter a
+    pub b: i64,   // Curve parameter b
+    pub x0: i64,  // Seed x-coordinate
+    pub y0: i64,  // Seed y-coordinate
+    pub k: usize, // Lifting exponent
+}
+
+// Define HokgResult type publicly
+pub type HokgResult = Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
+
+// Export only the hokg function from the hokg module
+pub use hokg::hokg;
+// Export other necessary items
 pub use ecc::elliptic_curve_multiply;
-pub use hokg::{hokg, Config};
 pub use point::Point;
