@@ -1,6 +1,6 @@
 // src/ecc.rs
 
-use crate::{point::Point, utils::mod_inverse};
+use crate::point::Point;
 use num_bigint_dig::BigInt;
 use num_traits::Zero;
 
@@ -40,13 +40,13 @@ pub fn elliptic_curve_multiply(
                                 // Point doubling: slope = (3x^2 + a) / (2y)
                                 let numerator = BigInt::from(3) * &x1 * &x1 + a;
                                 let denominator = BigInt::from(2) * &y1;
-                                let inv = mod_inverse(&denominator, modulus)?;
+                                let inv = crate::mod_inverse(&denominator, modulus)?;
                                 (numerator * inv) % modulus
                             } else {
                                 // Point addition: slope = (y2 - y1) / (x2 - x1)
                                 let numerator = &y2 - &y1;
                                 let denominator = &x2 - &x1;
-                                let inv = mod_inverse(&denominator, modulus)?;
+                                let inv = crate::mod_inverse(&denominator, modulus)?;
                                 (numerator * inv) % modulus
                             };
 
@@ -67,7 +67,7 @@ pub fn elliptic_curve_multiply(
                         let slope = {
                             let numerator = BigInt::from(3) * &x * &x + a;
                             let denominator = BigInt::from(2) * &y;
-                            let inv = mod_inverse(&denominator, modulus)?;
+                            let inv = crate::mod_inverse(&denominator, modulus)?;
                             (numerator * inv) % modulus
                         };
                         let x3 = (&slope * &slope - &x - &x) % modulus;
