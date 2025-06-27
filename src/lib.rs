@@ -3,6 +3,11 @@
 use num_bigint_dig::BigInt;
 use std::error::Error;
 
+// Declare the modules
+pub mod point;
+pub mod hokg;
+pub mod ecc;
+
 // Define Config struct publicly
 pub struct Config {
     pub p: u64,   // Small prime
@@ -15,7 +20,7 @@ pub struct Config {
 
 // Define HokgResult type publicly
 pub type HokgResult =
-    Result<(Point, BigInt, Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
+    Result<(point::Point, BigInt, point::Point, (u64, i64, i64, i64, i64, usize)), Box<dyn Error>>;
 
 // Re-export Point from the point module
 pub use point::Point;
