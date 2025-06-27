@@ -36,8 +36,8 @@ pub type HokgResult = Result<
 // Re-export Point from the point module
 pub use point::Point;
 
-// Re-export the hokg module to avoid direct function import issues
-pub use hokg;
+// Export the hokg function from the hokg module
+pub use hokg::hokg;
 
 // Export the elliptic_curve_multiply function from the ecc module
 pub use ecc::elliptic_curve_multiply;
